@@ -3,7 +3,7 @@
 - name: Ansible check directory exists example.
   stat:
     path: "{{role_path}}/../openshift-app-deployer"
-    register: openshift_app_deployer_directory
+  register: openshift_app_deployer_directory
 
 - fail: msg="The openshift-app-deployer role which this role depends upon does not appear to have been installed "
   when: not (openshift_app_deployer_directory.stat.exists) or not(openshift_app_deployer_directory.stat.isdir)
