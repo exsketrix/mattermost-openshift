@@ -1,0 +1,6 @@
+- name: Check all mandatory variables have been populated
+  include: check_vars.yml
+
+- name: Execute the OpenShift App Deployer role
+  include_role: 
+    name: openshift-app-deployer

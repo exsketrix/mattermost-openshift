@@ -1,0 +1,27 @@
+# Check whether mandatory variables are populated
+
+- name: Ansible check directory exists example.
+  stat:
+    path: "{{role_path}}/../openshift-app-deployer"
+    register: openshift_app_deployer_directory
+
+- fail: msg="The openshift-app-deployer role which this role depends upon does not appear to have been installed "
+  when: not (openshift_app_deployer_directory.stat.exists) or not(openshift_app_deployer_directory.stat.isdir)
+
+- fail: msg="The variable 'mattermost_openshift_postgres_password' is not defined or empty. This variable should contain the password to set for the PostGres Database. The value should be the base64 encoded string. This should be stored in an encrypted Ansible vault file."
+  when: (mattermost_openshift_postgres_password is not defined) or (mattermost_openshift_postgres_password|length == 0)
+
+- fail: msg="The variable 'mattermost_openshift_internal_tag' is not defined or empty. This variable should be set to the docker image tag to be tracked in the internal OS docker registry."
+  when: (mattermost_openshift_internal_tag is not defined) or (mattermost_openshift_internal_tag|length == 0)
+
+- fail: msg="The variable 'mattermost_openshift_docker_registry_host' is not defined or empty. This variable is the hostname of the docker registry to pull images from e.g. 'nexus.bizchat.io'."
+  when: (mattermost_openshift_docker_registry_host is not defined) or (mattermost_openshift_docker_registry_host|length == 0)
+
+- fail: msg="The variable 'mattermost_openshift_docker_registry_port' is not defined or empty. This variable is the port of the docker registry to pull images from e.g. '18999'."
+  when: (mattermost_openshift_docker_registry_port is not defined) or (mattermost_openshift_docker_registry_port|string|length == 0)
+
+- fail: msg="The variable 'mattermost_openshift_app_version_tag' is not defined or empty. This variable is the version / tag of the Mattermost Team Edition Docker Image e.g. '5.21.0'."
+  when: (mattermost_openshift_app_version_tag is not defined) or (mattermost_openshift_app_version_tag|string|length == 0)
+
+- fail: msg="The variable 'mattermost_openshift_nginx_version_tag' is not defined or empty. This variable is the version / tag of the Mattermost Team Edition Docker Image e.g. '1.17.9'."
+  when: (mattermost_openshift_nginx_version_tag is not defined) or (mattermost_openshift_nginx_version_tag|string|length == 0)

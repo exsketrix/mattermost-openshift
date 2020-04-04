@@ -1,0 +1,6 @@
+apiVersion: v1
+data:
+  MM_SQLSETTINGS_DRIVERNAME: postgres
+kind: ConfigMap
+metadata:
+  name: mm-app-env-vars

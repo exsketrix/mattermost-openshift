@@ -1,0 +1,84 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  labels:
+    app: mattermost-team-edition
+  name: mattermost-team-edition
+spec:
+  replicas: 1
+  selector:
+    app: mattermost-team-edition
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  template:
+    metadata:
+      labels:
+        app: mattermost-team-edition
+    spec:
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: mm-app-env-vars
+            - secretRef:
+                name: mm-app-db-datasource
+          imagePullPolicy: IfNotPresent
+          name: mattermost-team-edition
+          ports:
+            - containerPort: 8074
+              protocol: TCP
+            - containerPort: 8075
+              protocol: TCP
+            - containerPort: 8065
+              protocol: TCP
+            - containerPort: 8067
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /mattermost/config
+              name: mattermost-team-edition-volume-1
+            - mountPath: /mattermost/data
+              name: mattermost-app-data
+            - mountPath: /mattermost/logs
+              name: mattermost-team-edition-volume-3
+            - mountPath: /mattermost/plugins
+              name: mattermost-team-edition-volume-4
+            - mountPath: /mattermost/client/plugins
+              name: mattermost-team-edition-volume-5
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: mattermost-team-edition-volume-1
+          emptyDir: {}
+        - name: mattermost-app-data
+          persistentVolumeClaim:
+            claimName: mattermost-data
+        - name: mattermost-team-edition-volume-3
+          emptyDir: {}
+        - name: mattermost-team-edition-volume-4
+          emptyDir: {}
+        - name: mattermost-team-edition-volume-5
+          emptyDir: {}
+  test: false
+  triggers:
+    - type: "ConfigChange"
+    - type: "ImageChange"
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - mattermost-team-edition
+        from:
+          kind: ImageStreamTag
+          name: 'mattermost-team-edition:{{mattermost_openshift_internal_tag}}'

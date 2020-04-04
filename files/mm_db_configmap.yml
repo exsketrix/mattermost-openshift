@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  POSTGRESQL_DATABASE: mmdb
+  POSTGRESQL_USER: mmuser
+kind: ConfigMap
+metadata:
+  name: mm-postgresdb-env-vars

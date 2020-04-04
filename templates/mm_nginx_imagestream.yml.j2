@@ -1,0 +1,17 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  labels:
+    app: nginx
+  name: nginx
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+    - from:
+        kind: DockerImage
+        name: '{{mattermost_openshift_docker_registry_host}}:{{mattermost_openshift_docker_registry_port}}/nginx:{{mattermost_openshift_nginx_version_tag}}'
+      name: {{mattermost_openshift_internal_tag}}
+      importPolicy: {}
+      referencePolicy:
+        type: Source
