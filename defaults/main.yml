@@ -1,0 +1,26 @@
+---
+
+openshift_app_deployer_resources:
+  # MM PG DB Resources
+  - "mm_db_configmap.yml"
+  - "mm_db_password_secret.yml"
+  - "mm_db_imagestream.yml"
+  - "mm_db_pvc_data.yml"
+  - "mm_db_deploymentconfig.yml"
+  - "mm_db_service.yml"
+  # MM App Resources
+  - "mm_app_configmap.yml"
+  - "mm_app_datasource_secret.yml"
+  - "mm_app_imagestream.yml"
+  - "mm_app_pvc_data.yml"
+  - "mm_app_deploymentconfig.yml"
+  - "mm_app_service.yml"
+  # MM Nginx Resources
+  - "mm_nginx_configmap_nginx_conf.yml"
+  - "mm_nginx_configmap_nginx_mattermost_conf.yml"
+  - "mm_nginx_imagestream.yml"
+  - "mm_nginx_deploymentconfig.yml"
+  - "mm_nginx_service.yml"
+  - "mm_nginx_route.yml"
+openshift_app_deployer_files_resource_path: "{{role_path}}/../mattermost-openshift/files"
+openshift_app_deployer_templates_resource_path: "{{role_path}}/../mattermost-openshift/templates"

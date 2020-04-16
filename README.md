@@ -24,6 +24,12 @@ This role performs validation to check that all mandatory variables are populate
 | mattermost_openshift_app_version_tag            | Y         | 5.21.0                                                     |
 | mattermost_openshift_nginx_version_tag          | Y         | 1.17.9                                                     |
 
+This role also requires all the mandatory variables of the openshift-app-deployer role to be populated. The following variables required in the openshift-app-deployer role have been given default values in this role which can be overriden if required:
+
+* openshift_app_deployer_resources
+* openshift_app_deployer_files_resource_path
+* openshift_app_deployer_templates_resource_path 
+
 ## Installation into Ansible Playbook
 
 Create/Edit requirements yml file in playbook, adding the following dependency:
